@@ -21,7 +21,7 @@ class AlienBot:
   def __init__(self):
     self.alienbabble = {'describe_planet_intent': r'.*\s*your planet.*', 
                         'answer_why_intent': r'why are you\b.*$', 
-                        'cubed_intent': r'.*cube.*(\d+)', 
+                        'cubed_intent': r'.*cube.*?(\d+)', #Makes the quantifier non-greedy by adding the ? after the *. 
                         'no_match_intent:': r''} # Needed to add a regex pattern for no_match_intent to get it to work.
 
   def greet(self):
