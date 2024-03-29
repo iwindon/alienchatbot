@@ -19,10 +19,10 @@ class AlienBot:
     )
 
   def __init__(self):
-    self.alienbabble = {'describe_planet_intent': r'.*\s*your planet.*',
-                        'answer_why_intent': r'^Why are you (here\?|asking me so many questions\?)$',
-                        'cubed_intent': r'.*cube (\d+)'
-                            }
+    self.alienbabble = {'describe_planet_intent': r'.*\s*your planet.*', 
+                        'answer_why_intent': r'why are you\b.*$', 
+                        'cubed_intent': r'.*cube.*(\d+)', 
+                        'no_match_intent:': r''} # Needed to add a regex pattern for no_match_intent to get it to work.
 
   def greet(self):
     self.name = input("Hello there, what's your name? ")
@@ -41,7 +41,7 @@ class AlienBot:
 
   def chat(self):
     reply = input(random.choice(self.random_questions)).lower()
-    while not (self.make_exit(reply)):
+    while not self.make_exit(reply):
       reply = input(self.match_reply(reply))
 
   def match_reply(self, reply):
@@ -50,21 +50,12 @@ class AlienBot:
         regex_pattern = value
         found_match = re.match(regex_pattern, reply)
         if found_match and intent == 'describe_planet_intent':
-            print(found_match)
-            print(intent)
             return self.describe_planet_intent()
         elif found_match and intent == 'answer_why_intent':
-            print(found_match)
-            print(intent)
             return self.answer_why_intent()
         elif found_match and intent == 'cubed_intent':
-            print(found_match)
-            print(intent)
-            return self.cubed_intent(found_match)
-        else:
-            print(found_match)
-            print(intent)
-            return self.no_match_intent()
+            return self.cubed_intent(found_match.groups()[0])
+    return self.no_match_intent() # if no matches found.  NOTE: I had to move this out of the last else statement to get it to work.
         
 
   def describe_planet_intent(self):
