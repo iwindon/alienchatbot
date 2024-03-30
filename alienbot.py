@@ -21,10 +21,10 @@ class AlienBot:
   def __init__(self):
     self.alienbabble = {'describe_planet_intent': r'.*\s*your planet.*', 
                         'answer_why_intent': r'why are you\b.*$', 
-                        'cubed_intent': r'.*cube.*?(\d+)', #Makes the quantifier non-greedy by adding the ? after the *. 
+                        'cubed_intent': r'.*cube.*?(\d+)', # Makes the quantifier non-greedy by adding the ? after the *. 
                         'no_match_intent:': r''} # Needed to add a regex pattern for no_match_intent to get it to work.
 
-  def greet(self):
+  def greet(self): # Greets the user and asks for their name.
     self.name = input("Hello there, what's your name? ")
     will_help = input(f"Hello {self.name}, I'm Etcetera. I'm not from this planet. Will you help me learn about your planet? ")
     if will_help in self.negative_responses:
@@ -32,14 +32,14 @@ class AlienBot:
       return
     self.chat()
 
-  def make_exit(self, reply):
+  def make_exit(self, reply): # Checks if the user wants to exit the conversation.
     for exit_command in self.exit_commands:
       if exit_command in reply:
         print("Ok, have a great Earth day!")
         return True
     return False
 
-  def chat(self):
+  def chat(self): # Initiates the conversation.
     reply = input(random.choice(self.random_questions)).lower()
     while not self.make_exit(reply):
       reply = input(self.match_reply(reply))
@@ -58,23 +58,23 @@ class AlienBot:
     return self.no_match_intent() # if no matches found.  NOTE: I had to move this out of the last else statement to get it to work.
         
 
-  def describe_planet_intent(self):
+  def describe_planet_intent(self): # If the user asks "what is your planet like?"
     responses = ("My planet is a utopia of diverse organisms and species. ", "I am from Opidipus, the capital of the Wayward Galaxies. ")
     return random.choice(responses)
     
-  def answer_why_intent(self):
+  def answer_why_intent(self): # If the user asks "why are you here?"
     responses = ("I come in peace. ", "I am here to collect data on your planet and its inhabitants. ", "I heard the coffee is good. ")
     return random.choice(responses)
 
-  def cubed_intent(self, number):
+  def cubed_intent(self, number): # If the user asks "what is the cube of 5?"
     number = int(number)
     cubed_number = number * number * number
     return f"The cube of {number} is {cubed_number}. "
 
-  def no_match_intent(self):
+  def no_match_intent(self): # If intent does not match any of the regex patterns.
     responses = ("Please tell me more. ", "Tell me more! ", "Why do you say that? ", "I see. Can you elaborate? ", "Interesting. Can you tell me more? ")
     return random.choice(responses)
 
-
+# Create an instance of AlienBot: 
 Alien = AlienBot()
-Alien.greet()
+Alien.greet() # Start the conversation
